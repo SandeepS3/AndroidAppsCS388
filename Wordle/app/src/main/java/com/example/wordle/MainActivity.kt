@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             if (!correctGuess) {
                 val userGuess = editTextGuess.text.toString().uppercase()
 
-                if (userGuess.length == 4) {
+                if (isValidGuess(userGuess)) {
                     val guessResult = checkGuess(userGuess)
                     displayGuessResult(textViewResult, userGuess, guessResult)
                     guessCounter++
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     editTextGuess.text.clear()
                     hideKeyboard()
                 } else {
-                    showToast("Please enter a 4-letter word.")
+                    showToast("Please enter a valid 4-letter word containing only lowercase letters (a-z).")
                 }
             }
         }
@@ -60,6 +60,10 @@ class MainActivity : AppCompatActivity() {
         resetButton.setOnClickListener {
             resetGame(editTextGuess, buttonSubmit, textViewResult, resetButton)
         }
+    }
+
+    private fun isValidGuess(guess: String): Boolean {
+        return guess.length == 4 && guess.all { it in 'a'..'z' || it in 'A'..'Z' }
     }
 
     private fun checkGuess(guess: String): SpannableString {
@@ -101,16 +105,15 @@ class MainActivity : AppCompatActivity() {
         textViewResult.append(guessResult)
     }
 
-
     private fun displayCorrectAnswer(textViewResult: TextView) {
         hideKeyboard()
         val currentText = textViewResult.text.toString()
 
         if (correctGuess) {
-            val newText = "$currentText\nCongrats, You Solved It!"
+            val newText = "$currentText\n\n\nCongrats, You Solved It!"
             textViewResult.text = newText
         } else {
-            val newText = "$currentText\nSorry, Maybe Next Time!\nCorrect Answer: $wordToGuess"
+            val newText = "$currentText\n\n\nSorry, Maybe Next Time!\n\nCorrect Answer: $wordToGuess"
             textViewResult.text = newText
         }
     }
