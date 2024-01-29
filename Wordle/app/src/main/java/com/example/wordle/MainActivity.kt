@@ -1,12 +1,19 @@
 package com.example.wordle
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 
 class MainActivity : AppCompatActivity() {
     private var wordToGuess: String = ""
@@ -33,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     displayGuessResult(textViewResult, userGuess, guessResult)
                     guessCounter++
 
-                    if (guessResult == "OOOO") {
+                    if (guessResult.toString() == wordToGuess) {
                         correctGuess = true
                         displayCorrectAnswer(textViewResult)
                         hideInputAndSubmit(editTextGuess, buttonSubmit, resetButton)
@@ -43,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     editTextGuess.text.clear()
+                    hideKeyboard()
                 } else {
                     showToast("Please enter a 4-letter word.")
                 }
@@ -54,27 +62,48 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkGuess(guess: String): String {
-        var result = ""
-        for (i in 0 until wordToGuess.length) {
-            if (guess.length > i && guess[i] == wordToGuess[i]) {
-                result += "O"
-            } else if (guess.length > i && guess[i] in wordToGuess) {
-                result += "+"
-            } else {
-                result += "X"
+    private fun checkGuess(guess: String): SpannableString {
+        val spannableStringBuilder = SpannableStringBuilder()
+
+        for (i in 0 until guess.length) {
+            val color = when {
+                guess.length > i && guess[i] == wordToGuess[i] -> Color.GREEN
+                guess.length > i && guess[i] in wordToGuess -> Color.rgb(255, 165, 0)
+                else -> Color.RED
             }
+
+            val spannableString = SpannableString(guess[i].toString())
+            spannableString.setSpan(
+                ForegroundColorSpan(color),
+                0,
+                1,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            spannableStringBuilder.append(spannableString)
         }
-        return result
+
+        return SpannableString.valueOf(spannableStringBuilder)
     }
 
-    private fun displayGuessResult(textViewResult: TextView, userGuess: String, guessResult: String) {
+    private fun displayGuessResult(
+        textViewResult: TextView,
+        userGuess: String,
+        guessResult: SpannableString
+    ) {
         val currentText = textViewResult.text.toString()
-        val newText = "$currentText\nGuess $guessCounter: $userGuess\nGuess $guessCounter Check: $guessResult"
-        textViewResult.text = newText
+        val newText = "\nGuess $guessCounter: $userGuess\nGuess $guessCounter Check: "
+
+        if (!currentText.contains(newText)) {
+            textViewResult.append(newText)
+        }
+
+        textViewResult.append(guessResult)
     }
+
 
     private fun displayCorrectAnswer(textViewResult: TextView) {
+        hideKeyboard()
         val currentText = textViewResult.text.toString()
 
         if (correctGuess) {
@@ -90,6 +119,11 @@ class MainActivity : AppCompatActivity() {
         editTextGuess.visibility = View.GONE
         buttonSubmit.visibility = View.GONE
         resetButton.visibility = View.VISIBLE
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun showToast(message: String) {
