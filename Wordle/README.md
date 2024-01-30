@@ -18,4 +18,6 @@
 
 -[ ] User can see a 'streak' record of how many words they've guessed correctly.
 
-![Demo](https://youtu.be/XHIACM7yFC4)
+
+Demo: 
+https://youtu.be/XHIACM7yFC4
