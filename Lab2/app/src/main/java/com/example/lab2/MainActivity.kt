@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        
+
         // Lookup the RecyclerView in activity layout
         val emailsRv = findViewById<RecyclerView>(R.id.emailsRv)
         // Fetch the list of emails
