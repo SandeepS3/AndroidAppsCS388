@@ -1,12 +1,14 @@
--[x] User can add an item to the wishlis
+-[x] Send basic network requests to an API
 
--[x] User can see their list of items based on previously inputted items
+-[x] Parse the response from an API call and load into a model
 
--[x] Wishlist app is 🎨 customized 🎨
+-[x] Define model objects in your applications to store basic API data
 
--[x] User can delete an item by long pressing on the item
+-[x] Improve and customize the user interface through styling and coloring
 
--[x] User can open the an item URL by clicking on an item
+-[x] Implement orientation responsivity
+
+-[x] Implement Glide to display placeholder graphics during loading
 
 
-Demo: 
+Demo: https://youtu.be/6c2rQjUduJU
