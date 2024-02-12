@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Red application theme -->
+    <style name="RedAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your red theme here -->
+        <item name="colorPrimary">@color/redPrimary</item>
+        <item name="colorPrimaryDark">@color/redPrimaryDark</item>
+        <item name="colorAccent">@color/redAccent</item>
+        <!-- Add more customization if needed -->
+    </style>
+
+</resources>
