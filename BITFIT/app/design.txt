@@ -1,2 +1,0 @@
-Stretch
-    get date and compute/display calorie avg for current day
